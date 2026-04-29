@@ -1,0 +1,16 @@
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local-only configs (real secrets, real paths)
+.mcp.json
+claude_desktop_config.json
+.env
+.env.*
+
+# Build artifacts
+node_modules/
+dist/
+build/

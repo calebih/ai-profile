@@ -23,7 +23,7 @@ A few design choices fell out of "the agent is the primary reader":
 - **Feature maps tied to real code locations.** Not architecture summaries — controllers, SQL tables, queue topics, frontend ownership for one feature area. The things you actually need to investigate a bug.
 - **Explicit uncertainty.** Where the wiki isn't sure, it says so, instead of confidently lying.
 
-I designed the schema, the page types, and the operating model. I didn't write 194 repo pages by hand. A dedicated maintenance agent did the analysis, drafting, and ongoing maintenance against the schema. Of the 113 commits in the wiki repo, 111 are the agent's. The two that aren't are mine, and they're both schema/operating-model changes.
+I designed the schema, the page types, and the operating model. I didn't write 194 repo pages by hand. A dedicated maintenance agent did the analysis, drafting, and ongoing maintenance against the schema. Every commit in the wiki repo — 120 and counting — is the agent's. My contribution is the schema and the operating model: the rules the agent commits against, not the commits themselves.
 
 ## Three stages: index, ingest, lint
 
@@ -70,7 +70,7 @@ Wiring fresh cloud agents to consult the wiki as their first routing step before
 - **Trust the LLM enough to delete the platform.** Karpathy's wiki pattern beat my four-database architecture because in 2026 the model can do the analysis the static tools were going to do.
 - **Index, ingest, lint — pick a loop, not a build.** A wiki you don't maintain is a wiki that's wrong.
 - **Daily ingestion beats local clones.** Stale checkouts are the new technical debt.
-- **Be precise about the human/agent split.** Saying "I built it" when an agent wrote 111 of 113 commits trades short-term credibility for long-term credibility. Saying "I designed the operating model and an agent executed it" is more accurate and, in 2026, more interesting.
+- **Be precise about the human/agent split.** Saying "I built it" when an agent wrote every commit trades short-term credibility for long-term credibility. Saying "I designed the operating model and an agent executed it" is more accurate and, in 2026, more interesting.
 
 ---
 

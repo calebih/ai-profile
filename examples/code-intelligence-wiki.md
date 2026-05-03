@@ -1,7 +1,5 @@
 # Build log: an agent-first code wiki for 194 repos
 
-> Internal draft — needs human review before publishing externally. No customer data, but it names internal platform repos and product areas; verify it's OK to share before posting.
-
 ## The problem: cloud agents wake up blind
 
 A developer's local Claude Code session has every repo they care about already cloned. A *cloud* agent — fresh sandbox, no warm cache — doesn't. So the first thing it does on any non-trivial task is burn tokens trying to figure out which of our ~300 repos the work even lives in. Then it burns more tokens searching inside whichever repo it guessed.

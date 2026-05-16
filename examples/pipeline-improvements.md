@@ -14,18 +14,18 @@ This is the worst kind of CI failure. A red pipeline tells you what to fix. A gr
 
 The thing this post is really about, though, isn't the lie. It's how I scoped and executed the fix.
 
-## The methodology: GSD
+## The methodology
 
-I scope non-trivial engineering work using **[GSD (Get Shit Done)](https://github.com/gsd-build/get-shit-done)**, an open-source planning methodology codified into Claude Code slash commands and subagents. It decomposes a project into milestones, phases, and plans, with structured artifacts at every level: a project-level `PROJECT.md` and `MILESTONES.md`, per-milestone `ROADMAP.md` and `REQUIREMENTS.md`, per-phase `CONTEXT` / `RESEARCH` / `PLAN` / `SUMMARY` / `VERIFICATION` docs, and a living `RETROSPECTIVE.md` that compounds lessons across milestones.
+I scope non-trivial engineering work using a Claude Code skill I built — it runs a fixed analyze → investigate → plan → implement → test → PR sequence, decomposing a project into milestones, phases, and plans with structured artifacts at every level: project files, per-milestone roadmap and requirements, per-phase context, research, plan, summary, and verification docs, and a living retrospective that compounds lessons across milestones.
 
 Two practices do most of the work:
 
 1. **Decisions live in writing before code does.** Requirements, success criteria as TRUE-statements ("a complete project list anchored to `dotnet sln list` *exists*"), and rationale all get captured up front. Execution doesn't drift because there's nothing to drift against — the plan IS the criterion.
 2. **Investigation phases gate implementation phases.** For high-impact changes (data model, fixture lifecycle, parallelism), the phase immediately before execution is dedicated to *collecting decision data, not writing code*. The implementation phase then references the investigation artifacts directly. Zero discovery gaps during execution.
 
-The methodology lives as `/gsd:plan-phase`, `/gsd:execute-plan`, `/gsd:verify`, plus a suite of subagents (`gsd-planner`, `gsd-executor`, `gsd-verifier`, `gsd-roadmapper`, `gsd-phase-researcher`, etc.). The *bookkeeping* runs on rails. The human work is the thinking — what's the requirement, what's the TRUE-statement, is the investigation deep enough.
+A phase invocation that doesn't produce the required artifacts fails loud. The *bookkeeping* runs on rails. The human work is the thinking — what's the requirement, what's the TRUE-statement, is the investigation deep enough.
 
-For the test/CI problem, GSD scoped two milestones: v1.0 (analysis pipeline) and v1.1 (remediation execution). The pipeline stabilization PRs were the deployment step at the end.
+For the test/CI problem, the skill scoped two milestones: v1.0 (analysis pipeline) and v1.1 (remediation execution). The pipeline stabilization PRs were the deployment step at the end.
 
 ## v1.0 — the analysis pipeline (4 phases, ~2.4 hours of execution)
 
@@ -76,16 +76,16 @@ This is the move I'm proudest of. The "right" fix would have been to get write a
 - **33 DB-fixture-using assemblies → 8 shared group fixtures across 29 assemblies.** Zero regressions.
 - **96 tests** reclassified `Dependent=true → false` after audit. **210+ tests** promoted from `[FlakyFact]` to stable after root-cause fixes. **182 wholesale-skipped tests** un-skipped; 4 isolated as genuine pre-existing bugs.
 - **250+ Copilot review comments** triaged and resolved across four PRs.
-- **Four PRs merged** over nine days, preceded by ~2 days of structured analysis + remediation work scoped under GSD.
+- **Four PRs merged** over nine days, preceded by ~2 days of structured analysis + remediation work scoped under the workflow described above.
 
 ## Takeaways
 
 - **A green CI pipeline that isn't actually green is anti-information.** Treat fidelity as a higher priority than speed. A 30-minute deterministic run beats a 10-minute lying run by infinity.
 - **The bottleneck is rarely what you think.** CPU was 90% idle; the DB was the constraint. Tune against the actual bind.
 - **Investigation phases pay for themselves.** Phase 6 prevented regressions that would have shipped if Phase 7 had executed blindly. Document the decisions; the implementation gets boring.
-- **Codify your methodology into your tooling.** GSD lives as Claude Code slash commands and subagents because process discipline you have to remember is process discipline you don't have. The agents enforce the artifacts. The human work is the thinking.
+- **Codify your methodology into your tooling.** My workflow lives as a Claude Code skill because process discipline you have to remember is process discipline you don't have. The skill enforces the artifacts. The human work is the thinking.
 - **When you can't modify the shared system, feed it the input that makes it work for you.** The synthetic `.trx` works because we stopped fighting the existing reporter and started speaking its language.
 
 ---
 
-*Configs that drive workflows like this one live in the rest of [`ai-profile`](../). The structured planning methodology used here — GSD — is described in detail in [`gsd-methodology.md`](./gsd-methodology.md). If you're hiring for AI-native engineering work that still respects production rigor, that repo is the receipts.*
+*Configs that drive workflows like this one live in the rest of [`ai-profile`](../). The structured planning methodology used here is described in detail in [`engineering-workflow.md`](./engineering-workflow.md). If you're hiring for AI-native engineering work that still respects production rigor, that repo is the receipts.*
